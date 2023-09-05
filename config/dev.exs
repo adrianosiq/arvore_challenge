@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :arvore_challenge, ArvoreChallenge.Repo,
-  username: "root",
-  password: "",
-  hostname: "localhost",
-  database: "arvore_challenge_dev",
+  username: System.get_env("MYSQL_USER"),
+  password: System.get_env("MYSQL_PASSWORD"),
+  hostname: System.get_env("MYSQL_HOST"),
+  database: System.get_env("MYSQL_DATABASE"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

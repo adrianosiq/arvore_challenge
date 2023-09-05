@@ -1,0 +1,80 @@
+x-service-defaults: &service-defaults
+  build:
+    context: .
+    dockerfile: Dockerfile-dev
+  volumes:
+    - .:/opt
+    - "build:/opt/_build"
+    - "deps:/opt/deps"
+  ports:
+    - "4000:4000"
+  depends_on:
+    - db
+
+services:
+  web:
+    <<: *service-defaults
+    environment:
+      - PHX_SERVER=true
+      - MIX_ENV=dev
+      - MYSQL_HOST=arvore_challenge-db
+      - MYSQL_USER=secret
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=arvore_challenge
+      - TIMEZONE=America/Sao_Paulo
+    depends_on:
+      - db
+    networks:
+      default:
+        aliases:
+          - arvore_challenge-web
+
+  test:
+    <<: *service-defaults
+    command: mix do deps.get --only, coveralls --trace --color
+    environment:
+      - MIX_ENV=test
+      - MYSQL_HOST=arvore_challenge-db
+      - MYSQL_USER=secret
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=arvore_challenge-test
+      - TIMEZONE=America/Sao_Paulo
+
+  ci-test:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    volumes:
+      - .:/opt
+    ports:
+      - "4008:4008"
+    depends_on:
+      - db
+    command: mix do deps.get --only, coveralls --trace --color
+    environment:
+      - MIX_ENV=test
+      - MYSQL_HOST=arvore_challenge-db
+      - MYSQL_USER=secret
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=arvore_challenge-ci-test
+      - TIMEZONE=America/Sao_Paulo
+
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+    ports:
+      - "3306:3306"
+    networks:
+      default:
+        aliases:
+          - arvore_challenge-db
+
+volumes:
+  build:
+  deps:
+
+
+networks:
+  default:
+    name: arvore
