@@ -34,6 +34,7 @@ defmodule ArvoreChallenge.MixProject do
     [
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
+      {:plug_checkup, "~> 0.6"},
       {:phoenix, "~> 1.7.7"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.10"},
