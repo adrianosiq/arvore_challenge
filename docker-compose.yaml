@@ -59,6 +59,20 @@ services:
       - MYSQL_DATABASE=arvore_challenge-ci-test
       - TIMEZONE=America/Sao_Paulo
 
+  release:
+    build: .
+    ports:
+      - "4008:4008"
+    environment:
+      - PORT=4008
+      - ERLANG_COOKIE=abcd1234
+    depends_on:
+      - db
+    networks:
+      default:
+        aliases:
+          - arvore_challenge-release
+
   db:
     image: mysql:8.0
     environment:

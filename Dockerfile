@@ -33,7 +33,7 @@ RUN cp -R _build/${MIX_ENV}/rel/${APP_NAME}/* /opt/built
 # From this line onwards, we're in a new image, which will be the image used in production
 FROM alpine:${ALPINE_VERSION}
 
-ARG APP_NAME=teaching
+ARG APP_NAME=arvore_challenge
 
 RUN apk update && \
   apk add --no-cache \
