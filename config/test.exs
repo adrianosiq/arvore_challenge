@@ -9,12 +9,11 @@ database_name =
   "#{System.get_env("MYSQL_DATABASE", "arvore_challenge_test")}#{System.get_env("MIX_TEST_PARTITION")}"
 
 config :arvore_challenge, ArvoreChallenge.Repo,
-  username: System.get_env("MYSQL_USER", "secret"),
-  password: System.get_env("MYSQL_PASSWORD", "secret"),
+  username: System.get_env("MYSQL_USER", "root"),
+  password: System.get_env("MYSQL_PASSWORD", "mysql"),
   hostname: System.get_env("MYSQL_HOST", "localhost"),
   database: database_name,
-  pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: 10
+  pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

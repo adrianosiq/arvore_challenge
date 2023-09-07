@@ -1,15 +1,23 @@
+version: '3.8'
+
+volumes:
+  build:
+  deps:
+  mysql:
+
+
 x-service-defaults: &service-defaults
   build:
     context: .
     dockerfile: Dockerfile-dev
-  volumes:
-    - .:/opt
-    - "build:/opt/_build"
-    - "deps:/opt/deps"
   ports:
-    - "4000:4000"
+    - '4000:4000'
   depends_on:
     - db
+  volumes:
+    - .:/opt
+    - 'build:/opt/_build'
+    - 'deps:/opt/deps'
 
 services:
   web:
@@ -17,78 +25,42 @@ services:
     environment:
       - PHX_SERVER=true
       - MIX_ENV=dev
-      - MYSQL_HOST=arvore_challenge-db
-      - MYSQL_USER=secret
-      - MYSQL_PASSWORD=secret
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=mysql
       - MYSQL_DATABASE=arvore_challenge
       - TIMEZONE=America/Sao_Paulo
-    depends_on:
-      - db
-    networks:
-      default:
-        aliases:
-          - arvore_challenge-web
 
   test:
     <<: *service-defaults
     command: mix do deps.get --only, coveralls --trace --color
     environment:
       - MIX_ENV=test
-      - MYSQL_HOST=arvore_challenge-db
-      - MYSQL_USER=secret
-      - MYSQL_PASSWORD=secret
-      - MYSQL_DATABASE=arvore_challenge-test
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=arvore_challenge_test
       - TIMEZONE=America/Sao_Paulo
 
   ci-test:
     build:
       context: .
       dockerfile: Dockerfile-dev
-    volumes:
-      - .:/opt
-    ports:
-      - "4008:4008"
+    command: mix do deps.get --only, coveralls --trace --color
     depends_on:
       - db
-    command: mix do deps.get --only, coveralls --trace --color
     environment:
       - MIX_ENV=test
-      - MYSQL_HOST=arvore_challenge-db
-      - MYSQL_USER=secret
-      - MYSQL_PASSWORD=secret
-      - MYSQL_DATABASE=arvore_challenge-ci-test
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=arvore_challenge_ci_test
       - TIMEZONE=America/Sao_Paulo
-
-  release:
-    build: .
     ports:
-      - "4008:4008"
-    environment:
-      - PORT=4008
-      - ERLANG_COOKIE=abcd1234
-    depends_on:
-      - db
-    networks:
-      default:
-        aliases:
-          - arvore_challenge-release
+      - '4008:4008'
+    volumes:
+      - .:/opt
 
   db:
     image: mysql:8.0
     environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_ROOT_PASSWORD=mysql
     ports:
-      - "3306:3306"
-    networks:
-      default:
-        aliases:
-          - arvore_challenge-db
-
-volumes:
-  build:
-  deps:
-
-
-networks:
-  default:
-    name: arvore
+      - '3306:3306'
+    command: --default-authentication-plugin=mysql_native_password

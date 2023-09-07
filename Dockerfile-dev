@@ -4,7 +4,7 @@ FROM elixir:1.14-alpine
 # init
 RUN apk update && \
   apk add ca-certificates && update-ca-certificates && \
-  apk add git bash postgresql-client openssl curl alpine-sdk coreutils && \
+  apk add git bash mysql-client openssl curl alpine-sdk coreutils && \
   mix local.hex --force && \
   mix local.rebar --force && \
   mix archive.install hex phx_new --force

@@ -10,6 +10,7 @@ defmodule ArvoreChallenge.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      test_coverage: [tool: ExCoveralls],
       releases: [
         arvore_challenge: [
           include_executables_for: [:unix],
@@ -51,7 +52,7 @@ defmodule ArvoreChallenge.MixProject do
       {:phoenix, "~> 1.7.7"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.10"},
-      {:myxql, ">= 0.0.0"},
+      {:myxql, "~> 0.6.0"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
