@@ -19,7 +19,6 @@ blocks:
         - cache restore build-$(md5sum mix.lock | awk '{ print $1 }')
         - cache restore deps-$(md5sum mix.lock | awk '{ print $1 }')
 
-        - docker network create arvore
         - docker-compose run ci-test mix do deps.get, compile
 
       jobs:
@@ -42,4 +41,4 @@ blocks:
 
           - cache store build-$(md5sum mix.lock | awk '{ print $1 }') _build
           - cache store deps-$(md5sum mix.lock | awk '{ print $1 }') deps
-          - cache has_key image-$(md5sum Dockerfile-dev | awk '{ print $1 }') || (docker image save arvore_ci-test -o ./image.tar   && cache store image-$(md5sum Dockerfile-dev | awk '{ print $1 }') image.tar)
+          - cache has_key image-$(md5sum Dockerfile-dev | awk '{ print $1 }') || (docker image save arvore_challenge-ci-test -o ./image.tar   && cache store image-$(md5sum Dockerfile-dev | awk '{ print $1 }') image.tar)
