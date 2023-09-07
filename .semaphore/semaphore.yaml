@@ -1,0 +1,45 @@
+version: v1.0
+name: Arvore Challenge CI/CD pipeline
+
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Analyze code & Test"
+    task:
+      prologue:
+        commands:
+        - checkout
+
+        - cache restore image-$(md5sum Dockerfile-dev | awk '{ print $1 }')
+        - (docker image load -i image.tar) || true
+
+        - cache restore build-$(md5sum mix.lock | awk '{ print $1 }')
+        - cache restore deps-$(md5sum mix.lock | awk '{ print $1 }')
+
+        - docker network create arvore
+        - docker-compose run ci-test mix do deps.get, compile
+
+      jobs:
+      - name: sobelow
+        commands:
+          - docker-compose run --rm ci-test mix sobelow --config
+
+      - name: credo
+        commands:
+          - docker-compose run --rm ci-test mix credo --strict
+
+      - name: formatter
+        commands:
+          - docker-compose run --rm ci-test mix format --check-formatted
+
+      - name: ci-test
+        commands:
+          - docker-compose run ci-test mix do ecto.create, ecto.migrate
+          - docker-compose run --rm ci-test
+
+          - cache store build-$(md5sum mix.lock | awk '{ print $1 }') _build
+          - cache store deps-$(md5sum mix.lock | awk '{ print $1 }') deps
+          - cache has_key image-$(md5sum Dockerfile-dev | awk '{ print $1 }') || (docker image save arvore_ci-test -o ./image.tar   && cache store image-$(md5sum Dockerfile-dev | awk '{ print $1 }') image.tar)
