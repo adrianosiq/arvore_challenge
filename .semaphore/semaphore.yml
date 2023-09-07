@@ -1,44 +1,60 @@
 version: v1.0
 name: Arvore Challenge CI/CD pipeline
-
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
-
 blocks:
-  - name: "Analyze code & Test"
+  - name: Analyze code & Test
     task:
       prologue:
         commands:
-        - checkout
-
-        - cache restore image-$(md5sum Dockerfile-dev | awk '{ print $1 }')
-        - (docker image load -i image.tar) || true
-
-        - cache restore build-$(md5sum mix.lock | awk '{ print $1 }')
-        - cache restore deps-$(md5sum mix.lock | awk '{ print $1 }')
-
-        - docker-compose run ci-test mix do deps.get, compile
-
+          - checkout
+          - 'cache restore image-$(md5sum Dockerfile-dev | awk ''{ print $1 }'')'
+          - (docker image load -i image.tar) || true
+          - 'cache restore build-$(md5sum mix.lock | awk ''{ print $1 }'')'
+          - 'cache restore deps-$(md5sum mix.lock | awk ''{ print $1 }'')'
+          - 'docker-compose run ci-test mix do deps.get, compile'
       jobs:
-      - name: sobelow
-        commands:
-          - docker-compose run --rm ci-test mix sobelow --config
+        - name: sobelow
+          commands:
+            - docker-compose run --rm ci-test mix sobelow --config
+        - name: credo
+          commands:
+            - docker-compose run --rm ci-test mix credo --strict
+        - name: formatter
+          commands:
+            - docker-compose run --rm ci-test mix format --check-formatted
+        - name: ci-test
+          commands:
+            - 'docker-compose run ci-test mix do ecto.create, ecto.migrate'
+            - docker-compose run --rm ci-test
+            - 'cache store build-$(md5sum mix.lock | awk ''{ print $1 }'') _build'
+            - 'cache store deps-$(md5sum mix.lock | awk ''{ print $1 }'') deps'
+            - 'cache has_key image-$(md5sum Dockerfile-dev | awk ''{ print $1 }'') || (docker image save arvore_challenge_ci-test -o ./image.tar && cache store image-$(md5sum Dockerfile-dev | awk ''{ print $1 }'') image.tar)'
 
-      - name: credo
-        commands:
-          - docker-compose run --rm ci-test mix credo --strict
+  - name: Build Deploy Image
+    task:
+      secrets:
+        - name: AWS
+      jobs:
+        - name: build & publish
+          commands:
+            - checkout
+            - cache restore build-prod-$(md5sum mix.lock | awk '{ print $1 }')
+            - cache restore deps-prod-$(md5sum mix.lock | awk '{ print $1 }')
 
-      - name: formatter
-        commands:
-          - docker-compose run --rm ci-test mix format --check-formatted
+            - aws ecr get-login --no-include-email | bash
 
-      - name: ci-test
-        commands:
-          - docker-compose run ci-test mix do ecto.create, ecto.migrate
-          - docker-compose run --rm ci-test
+            - docker pull "${ECR_REGISTRY}:latest" || true
+            - docker build --cache-from "${ECR_REGISTRY}:latest" -t "${ECR_REGISTRY}:${SEMAPHORE_WORKFLOW_ID}" -t Dockerfile-prod .
+            - docker images
+            - docker push "${ECR_REGISTRY}:${SEMAPHORE_WORKFLOW_ID}"
 
-          - cache store build-$(md5sum mix.lock | awk '{ print $1 }') _build
-          - cache store deps-$(md5sum mix.lock | awk '{ print $1 }') deps
-          - cache has_key image-$(md5sum Dockerfile-dev | awk '{ print $1 }') || (docker image save arvore_challenge_ci-test -o ./image.tar && cache store image-$(md5sum Dockerfile-dev | awk '{ print $1 }') image.tar)
+promotions:
+  - name: "[01] Deploy to EKS - Production"
+    pipeline_file: deployments/production.yaml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - ^main$
