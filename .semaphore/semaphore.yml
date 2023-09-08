@@ -53,7 +53,7 @@ blocks:
 
 promotions:
   - name: "[01] Deploy to EKS - Production"
-    pipeline_file: deployments/production.yaml
+    pipeline_file: deployments/production.yml
     auto_promote_on:
       - result: passed
         branch:
