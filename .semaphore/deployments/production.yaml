@@ -14,3 +14,4 @@ blocks:
       - name: Deploy
         commands:
           - checkout
+          

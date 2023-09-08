@@ -7,9 +7,7 @@ volumes:
 
 
 x-service-defaults: &service-defaults
-  build:
-    context: .
-    dockerfile: Dockerfile-dev
+  build: .
   ports:
     - '4000:4000'
   depends_on:
@@ -41,9 +39,7 @@ services:
       - TIMEZONE=America/Sao_Paulo
 
   ci-test:
-    build:
-      context: .
-      dockerfile: Dockerfile-dev
+    build: .
     command: mix do deps.get --only, coveralls --trace --color
     depends_on:
       db:
