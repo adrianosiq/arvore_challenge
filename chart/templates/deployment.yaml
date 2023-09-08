@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arvore-challenge
+spec:
+  selector:
+    matchLabels:
+      app: arvore-challenge
+  replicas: {{ .Values.replicas_count }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: arvore-challenge
+    spec:
+      containers:
+        - name: arvore-challenge
+          image: "{{ .Values.ecr_regitry }}:{{ .Values.semaphore_workflow_id }}"
+          ports:
+            - name: http
+              containerPort: 4000
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 15
+            periodSeconds: 60
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 15
+            periodSeconds: 60
+            successThreshold: 1
+          env:
+            - name: MIX_ENV
+              value: prod
+            - name: DATABASE_URL
+              value: {{ .Values.env.db.endpoint }}
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: phoenix
+                  key: secret_key_base

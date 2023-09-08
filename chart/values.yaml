@@ -1,0 +1,16 @@
+resources:
+  requests:
+    cpu: 50m
+    memory: 200Mi
+
+replicas_count: "2"
+ecr_regitry: 783897272624.dkr.ecr.sa-east-1.amazonaws.com/semaphore-arvore-challenge-kubernetes
+semaphore_workflow_id: latest
+
+env:
+  db:
+    endpoint: arvorechallengeinstance.credrkngzkya.sa-east-1.rds.amazonaws.com
+
+secrets:
+  phoenix:
+    secret_key_base: 9hEVkbXXmCXdy8OEC0T1dSNW5MvDsaKbmaZenDmzeI/MgmROrvRp/BDYjWm2HZYY

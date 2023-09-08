@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: arvore-challenge
+spec:
+  selector:
+    app: arvore-challenge
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 4000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  externalName: {{ .Values.env.db.endpoint }}
+  selector:
+    app: arvore-challenge
+  type: ExternalName
+status:
+  loadBalancer: {}
+      
