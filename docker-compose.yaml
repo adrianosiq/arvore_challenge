@@ -54,6 +54,20 @@ services:
     volumes:
       - .:/opt
 
+  release:
+    build:
+      context: .
+      dockerfile: Dockerfile.ci
+    ports:
+      - "4008:4008"
+    environment:
+      - PORT=4008
+      - ERLANG_COOKIE=abcd1234
+      - SECRET_KEY_BASE=WicuiUeirLVtq4cZTE7df8Lp8d4A22VM+ZwIF59o7zTZv9P/c00ayhLW2XJriEMX
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
