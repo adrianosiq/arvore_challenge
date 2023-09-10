@@ -44,10 +44,8 @@ blocks:
             - cache restore build-prod-$(md5sum mix.lock | awk '{ print $1 }')
             - cache restore deps-prod-$(md5sum mix.lock | awk '{ print $1 }')
             - aws ecr get-login --no-include-email | bash
-            - docker pull "${ECR_REGISTRY}:latest" || true
-            - docker build --cache-from "${ECR_REGISTRY}:latest" -t "${ECR_REGISTRY}:${SEMAPHORE_WORKFLOW_ID}" -t dockerfile.ci .
-            - docker images
-            - docker push "${ECR_REGISTRY}:${SEMAPHORE_WORKFLOW_ID}"
+            - docker build . -f Dockerfile.ci -t "${ECR_REGISTRY}:${SEMAPHORE_GIT_SHA}"
+            - docker push "${ECR_REGISTRY}:${SEMAPHORE_GIT_SHA}"
 
 promotions:
   - name: "[01] Deploy to EKS - Production"
