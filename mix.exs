@@ -43,6 +43,7 @@ defmodule ArvoreChallenge.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:faker, "~> 0.17", only: :test},
       {:excoveralls, "~> 0.10", only: :test},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
