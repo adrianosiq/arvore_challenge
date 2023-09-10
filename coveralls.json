@@ -11,6 +11,7 @@
     "lib/arvore_challenge_web/telemetry.ex",
     "test/support/data_case.ex",
     "test/support/conn_case.ex",
+    "test/support/fixtures.ex",
     "config/"
   ]
 }

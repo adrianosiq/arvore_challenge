@@ -29,6 +29,7 @@ defmodule ArvoreChallengeWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import ArvoreChallengeWeb.ConnCase
+      import ArvoreChallenge.Fixtures
     end
   end
 

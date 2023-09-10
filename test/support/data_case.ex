@@ -25,6 +25,7 @@ defmodule ArvoreChallenge.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import ArvoreChallenge.DataCase
+      import ArvoreChallenge.Fixtures
     end
   end
 
