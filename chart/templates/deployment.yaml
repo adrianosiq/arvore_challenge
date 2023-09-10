@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: arvore-challenge
-          image: "{{ .Values.ecr_regitry }}:{{ .Values.semaphore_workflow_id }}"
+          image: "{{ .Values.env.ecr_regitry }}:{{ .Values.env.image_hash }}"
           ports:
             - name: http
               containerPort: 4000
@@ -42,8 +42,25 @@ spec:
           env:
             - name: MIX_ENV
               value: prod
-            - name: DATABASE_URL
-              value: {{ .Values.env.db.endpoint }}
+            - name: URL_HOST
+              value: {{ .Values.env.host }}
+            - name: MYSQL_URL
+              value: mysql-service
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: database
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:

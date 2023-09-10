@@ -1,16 +1,19 @@
+replicas_count: 1
+
 resources:
   requests:
     cpu: 50m
     memory: 200Mi
 
-replicas_count: "2"
-ecr_regitry: 783897272624.dkr.ecr.sa-east-1.amazonaws.com/semaphore-arvore-challenge-kubernetes
-semaphore_workflow_id: latest
-
 env:
-  db:
-    endpoint: arvorechallengeinstance.credrkngzkya.sa-east-1.rds.amazonaws.com
+  host: aaea2dd62d5144d309516fa3a1b7e1ed-879013427.sa-east-1.elb.amazonaws.com
+  ecr_regitry: 783897272624.dkr.ecr.sa-east-1.amazonaws.com/semaphore-arvore-challenge-kubernetes
+  image_hash:
 
 secrets:
+  mysql:
+    username:
+    password:
+    database:
   phoenix:
-    secret_key_base: 9hEVkbXXmCXdy8OEC0T1dSNW5MvDsaKbmaZenDmzeI/MgmROrvRp/BDYjWm2HZYY
+    secret_key_base:
