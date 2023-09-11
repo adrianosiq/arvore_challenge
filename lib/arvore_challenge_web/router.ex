@@ -5,8 +5,11 @@ defmodule ArvoreChallengeWeb.Router do
     plug(:accepts, ["json"])
   end
 
-  scope "/api", ArvoreChallengeWeb do
+  scope "/api" do
     pipe_through(:api)
+
+    forward("/graphiql", Absinthe.Plug.GraphiQL, schema: ArvoreChallengeWeb.Schema)
+    forward("/", Absinthe.Plug, schema: ArvoreChallengeWeb.Schema)
   end
 
   ## Health Check
