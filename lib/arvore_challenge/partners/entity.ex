@@ -12,7 +12,9 @@ defmodule ArvoreChallenge.Partners.Entity do
           inep: nil | Integer.t(),
           name: nil | String.t(),
           parent_id: nil | Integer.t(),
-          parent: nil | Entity.t() | Ecto.Association.NotLoaded.t()
+          parent: nil | Entity.t() | Ecto.Association.NotLoaded.t(),
+          access_key: nil | String.t(),
+          secret_access_key: nil | String.t()
         }
 
   @timestamps_opts [type: :naive_datetime_usec]
@@ -20,6 +22,8 @@ defmodule ArvoreChallenge.Partners.Entity do
     field(:entity_type, Ecto.Enum, values: [:network, :school, :class])
     field(:inep, :integer)
     field(:name, :string)
+    field(:access_key, :string)
+    field(:secret_access_key, :string)
     belongs_to(:parent, __MODULE__, foreign_key: :parent_id)
     has_many(:subtree, __MODULE__, foreign_key: :parent_id)
 
