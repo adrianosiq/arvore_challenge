@@ -7,6 +7,8 @@
     "lib/arvore_challenge/health_checker.ex",
     "lib/arvore_challenge/release_tasks.ex",
     "lib/arvore_challenge_web.ex",
+    "lib/arvore_challenge_web/middlewares/error_handler.ex",
+    "lib/arvore_challenge_web/error.ex",
     "lib/arvore_challenge_web/router.ex",
     "lib/arvore_challenge_web/telemetry.ex",
     "test/support/data_case.ex",
