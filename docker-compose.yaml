@@ -11,7 +11,8 @@ x-service-defaults: &service-defaults
   ports:
     - '4000:4000'
   depends_on:
-    - db
+    db:
+      condition: service_healthy
   volumes:
     - .:/opt
     - 'build:/opt/_build'
@@ -58,15 +59,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.ci
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - "4008:4008"
     environment:
       - PORT=4008
       - ERLANG_COOKIE=abcd1234
       - SECRET_KEY_BASE=WicuiUeirLVtq4cZTE7df8Lp8d4A22VM+ZwIF59o7zTZv9P/c00ayhLW2XJriEMX
-    depends_on:
-      db:
-        condition: service_healthy
 
   db:
     image: mysql:8.0
