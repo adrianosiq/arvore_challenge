@@ -7,7 +7,7 @@ defmodule ArvoreChallenge.Authorizations.Guardian do
   alias ArvoreChallenge.Partners.Entity
 
   @spec subject_for_token(Entity.t(), Map.t()) :: {:ok, String.t()}
-  def subject_for_token(%{id: id}, _claims), do: {:ok, id}
+  def subject_for_token(%Entity{id: id}, _claims), do: {:ok, id}
   def subject_for_token(_entity, _claims), do: {:error, :not_found}
 
   @spec resource_from_claims(Map.t()) :: Entity.t()
