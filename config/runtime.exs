@@ -28,7 +28,7 @@ if config_env() == :prod do
     username: System.get_env("MYSQL_USER"),
     password: System.get_env("MYSQL_PASSWORD"),
     hostname: System.get_env("MYSQL_HOST"),
-    database: System.get_env("MYSQL_URL"),
+    database: System.get_env("MYSQL_DATABASE"),
     port: "3306",
     show_sensitive_data_on_connection_error: false,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
@@ -46,7 +46,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.fetch_env!("URL_HOST")
+  host = System.fetch_env!("PHX_HOST")
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :arvore_challenge, ArvoreChallengeWeb.Endpoint,

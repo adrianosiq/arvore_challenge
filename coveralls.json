@@ -5,7 +5,7 @@
   "skip_files": [
     "lib/arvore_challenge/application.ex",
     "lib/arvore_challenge/health_checker.ex",
-    "lib/arvore_challenge/release_tasks.ex",
+    "lib/arvore_challenge/release.ex",
     "lib/arvore_challenge_web.ex",
     "lib/arvore_challenge_web/context.ex",
     "lib/arvore_challenge_web/error.ex",

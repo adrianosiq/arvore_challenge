@@ -53,4 +53,4 @@ WORKDIR /opt/app
 COPY --from=builder /opt/built .
 
 EXPOSE 4000
-CMD ["sh", "-c", "/opt/app/bin/${APP_NAME} eval 'ArvoreChallenge.ReleaseTasks.migrate'; trap 'exit' INT; /opt/app/bin/${APP_NAME} start"]
+CMD ["sh", "-c", "/opt/app/bin/${APP_NAME} eval 'ArvoreChallenge.Release.migrate'; trap 'exit' INT; /opt/app/bin/${APP_NAME} start"]
