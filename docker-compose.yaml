@@ -27,9 +27,7 @@ services:
       - PHX_SERVER=true
       - MIX_ENV=dev
       - MYSQL_HOST=db
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=mysql
-      - MYSQL_DATABASE=arvore_challenge
+      - MYSQL_DATABASE=arvore_challenge_dev
       - GUARDIAN_TOKEN=x+SQxshaO975PeYCoLcZW5pCigRucayb7JqgisXod5P5/O2GnoL+IxiFPixjsv8e
       - TIMEZONE=America/Sao_Paulo
 
