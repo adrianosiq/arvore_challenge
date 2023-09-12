@@ -3,13 +3,16 @@ defmodule ArvoreChallengeWeb.Schema do
 
   use Absinthe.Schema
 
+  alias ArvoreChallengeWeb.Middlewares.EnsureAuthentication
   alias ArvoreChallengeWeb.Middlewares.ErrorHandler
+  alias ArvoreChallengeWeb.Resolvers.Partners.Authorization
   alias ArvoreChallengeWeb.Resolvers.Partners.Entity
 
   query do
     field :entity, :entity do
       arg(:id, non_null(:integer))
 
+      middleware(EnsureAuthentication)
       resolve(&Entity.get_entity/2)
     end
   end
@@ -30,7 +33,15 @@ defmodule ArvoreChallengeWeb.Schema do
       arg(:parent_id, :integer)
       arg(:inep, :string)
 
+      middleware(EnsureAuthentication)
       resolve(&Entity.update_entity/2)
+    end
+
+    field :autorization, :autorization do
+      arg(:access_key, non_null(:string))
+      arg(:secret_access_key, non_null(:string))
+
+      resolve(&Authorization.auhorization/2)
     end
   end
 
@@ -41,6 +52,12 @@ defmodule ArvoreChallengeWeb.Schema do
     field(:name, :string)
     field(:parent_id, :integer)
     field(:subtree_ids, list_of(:integer))
+  end
+
+  object :autorization do
+    field(:access_token, :string)
+    field(:expires_in, :integer)
+    field(:token_type, :string)
   end
 
   # coveralls-ignore-start
