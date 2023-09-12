@@ -1,5 +1,5 @@
 defmodule ArvoreChallengeWeb.SchemaTest do
-  use ArvoreChallengeWeb.ConnCase, async: true
+  use ArvoreChallengeWeb.ConnCase
 
   alias ArvoreChallenge.Authorizations.Guardian
   alias ArvoreChallenge.Partners.Entity
