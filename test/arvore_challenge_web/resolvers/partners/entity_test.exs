@@ -50,6 +50,8 @@ defmodule ArvoreChallengeWeb.Resolvers.Partners.EntityTest do
       assert created_entity.name == "Some Class"
       assert created_entity.parent_id == entity_school.id
       assert created_entity.subtree_ids == []
+      assert is_binary(created_entity.access_key)
+      assert is_binary(created_entity.secret_access_key)
     end
 
     test "returns an error" do

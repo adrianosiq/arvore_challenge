@@ -9,7 +9,7 @@ defmodule ArvoreChallengeWeb.Resolvers.Partners.Entity do
   def get_entity(%{id: entity_id}, _resolution) do
     case Partners.get_entity(entity_id) do
       {:error, reason} -> {:error, reason}
-      {:ok, %Entity{} = entity} -> {:ok, build_response(entity)}
+      {:ok, %Entity{} = entity} -> {:ok, build_response(entity, false)}
     end
   end
 
@@ -17,7 +17,7 @@ defmodule ArvoreChallengeWeb.Resolvers.Partners.Entity do
   def create_entity(%{} = attrs, _resolution) do
     case Partners.create_entity(attrs) do
       {:error, reason} -> {:error, reason}
-      {:ok, %Entity{} = entity} -> {:ok, build_response(entity)}
+      {:ok, %Entity{} = entity} -> {:ok, build_response(entity, true)}
     end
   end
 
@@ -26,11 +26,13 @@ defmodule ArvoreChallengeWeb.Resolvers.Partners.Entity do
     with {:ok, %Entity{} = entity} <- Partners.get_entity(entity_id),
          attrs_with_type <- Map.put(attrs, :entity_type, to_string(entity.entity_type)),
          {:ok, %Entity{} = updated_entity} <- Partners.update_entity(entity, attrs_with_type) do
-      {:ok, build_response(updated_entity)}
+      {:ok, build_response(updated_entity, false)}
     end
   end
 
-  defp build_response(%Entity{} = entity) do
+  defp build_response(_entity, _with_credentials?)
+
+  defp build_response(%Entity{} = entity, false) do
     %{
       id: entity.id,
       entity_type: to_string(entity.entity_type),
@@ -39,5 +41,12 @@ defmodule ArvoreChallengeWeb.Resolvers.Partners.Entity do
       parent_id: entity.parent_id,
       subtree_ids: Enum.map(entity.subtree, fn %{id: subtree_id} -> subtree_id end)
     }
+  end
+
+  defp build_response(%Entity{} = entity, true) do
+    Map.merge(build_response(entity, false), %{
+      access_key: entity.access_key,
+      secret_access_key: entity.secret_access_key
+    })
   end
 end
