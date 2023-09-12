@@ -29,8 +29,7 @@ if config_env() == :prod do
     password: System.get_env("MYSQL_PASSWORD"),
     hostname: System.get_env("MYSQL_HOST"),
     database: System.get_env("MYSQL_DATABASE"),
-    port: "3306",
-    show_sensitive_data_on_connection_error: false,
+    show_sensitive_data_on_connection_error: true,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
     socket_options: maybe_ipv6
 
@@ -51,7 +50,7 @@ if config_env() == :prod do
 
   config :arvore_challenge, ArvoreChallengeWeb.Endpoint,
     server: true,
-    url: [host: host, port: 80, scheme: "http"],
+    url: [host: host, port: 443, scheme: "https"],
     http: [
       ip: {0, 0, 0, 0, 0, 0, 0, 0},
       port: port

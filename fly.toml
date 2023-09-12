@@ -1,0 +1,31 @@
+# fly.toml app configuration file generated for arvore-challenge on 2023-09-12T13:20:28-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "arvore-challenge"
+kill_signal = "SIGTERM"
+swap_size_mb = 512
+
+[build]
+
+[deploy]
+  release_command = "/app/bin/migrate"
+
+[env]
+  PHX_HOST = "arvore-challenge.fly.dev"
+  PORT = "8080"
+  MYSQL_HOST = "arvore-challenge.cu2zqdsajeyr.us-east-2.rds.amazonaws.com"
+  MYSQL_DATABASE = "arvore_challenge"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 1000
+    soft_limit = 1000
