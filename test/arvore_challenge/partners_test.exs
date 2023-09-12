@@ -27,6 +27,22 @@ defmodule ArvoreChallenge.PartnersTest do
     end
   end
 
+  describe "get_entity_by_access_key_and_secret_access_key/2" do
+    test "returns an entity" do
+      entity = insert!(:entity)
+
+      assert Partners.get_entity_by_access_key_and_secret_access_key(
+               entity.access_key,
+               entity.secret_access_key
+             ) == {:ok, entity}
+    end
+
+    test "returns an error when the entity is not found" do
+      assert Partners.get_entity_by_access_key_and_secret_access_key("", "") ==
+               {:error, :not_found}
+    end
+  end
+
   describe "create_entity/1" do
     test "returns an entity of the type network" do
       attrs = %{entity_type: "network", name: "Some Network"}
@@ -34,6 +50,11 @@ defmodule ArvoreChallenge.PartnersTest do
       assert {:ok, created_entity} = Partners.create_entity(attrs)
       assert created_entity.entity_type == :network
       assert created_entity.name == "Some Network"
+      assert is_nil(created_entity.inep)
+      assert is_nil(created_entity.parent_id)
+      assert is_binary(created_entity.access_key)
+      assert is_binary(created_entity.secret_access_key)
+      assert created_entity.subtree == []
     end
 
     test "returns an error when required fields are empty of the type network" do
@@ -48,7 +69,10 @@ defmodule ArvoreChallenge.PartnersTest do
       assert created_entity.entity_type == :school
       assert created_entity.name == "Some School"
       assert created_entity.inep == 13_082_175
-      assert created_entity.parent_id == nil
+      assert is_nil(created_entity.parent_id)
+      assert is_binary(created_entity.access_key)
+      assert is_binary(created_entity.secret_access_key)
+      assert created_entity.subtree == []
     end
 
     test "returns an error when required fields are empty of the type school" do
@@ -84,8 +108,12 @@ defmodule ArvoreChallenge.PartnersTest do
       assert {:ok, created_entity} = Partners.create_entity(attrs)
       assert created_entity.entity_type == :class
       assert created_entity.name == "Some Class"
+      assert is_nil(created_entity.inep)
       assert created_entity.parent_id == entity_school.id
       assert created_entity.parent == entity_school
+      assert is_binary(created_entity.access_key)
+      assert is_binary(created_entity.secret_access_key)
+      assert created_entity.subtree == []
     end
 
     test "returns an error when required fields are empty of the type class" do
