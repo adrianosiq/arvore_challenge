@@ -1,6 +1,0 @@
-apiVersion: v2
-name: arvore_challenge
-description: The Arvore Challenge Application Chart
-type: application
-version: 0.1.0
-appVersion: 1.16.0
