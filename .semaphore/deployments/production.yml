@@ -1,5 +1,5 @@
 version: v1.0
-name: Deploy to EKS
+name: Deploy to Fly.io
 agent:
   machine:
     type: e1-standard-2
@@ -9,14 +9,10 @@ blocks:
   - name: Deploy
     task:
       secrets:
-        - name: AWS
-        - name: AWS-k8
+        - name: Fly.io
       jobs:
       - name: Deploy
         commands:
           - checkout
-          - export ECR_PASSWORD=$(aws ecr get-login --no-include-email | awk '{print $6}')
-          - kubectl delete secret aws-ecr || true
-          - kubectl create secret docker-registry aws-ecr --docker-server="https://$ECR_REGISTRY" --docker-username=AWS --docker-password="$ECR_PASSWORD"
-          - curl -L https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-          - helm upgrade arvore-challenge ./chart -n arvore-challenge --reuse-values --set env.image_hash=${SEMAPHORE_GIT_SHA}
+          - curl -L https://fly.io/install.sh | bash
+          - flyctl deploy --remote-only --access-token $FLY_API_TOKEN

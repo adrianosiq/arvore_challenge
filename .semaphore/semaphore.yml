@@ -33,22 +33,8 @@ blocks:
             - cache store deps-$(md5sum mix.lock | awk ''{ print $1 }'') deps
             - cache has_key image-$(md5sum Dockerfile-dev | awk ''{ print $1 }'') || (docker image save arvore_challenge_ci-test -o ./image.tar && cache store image-$(md5sum Dockerfile-dev | awk ''{ print $1 }'') image.tar)
 
-  - name: Build Deploy Image
-    task:
-      secrets:
-        - name: AWS
-      jobs:
-        - name: build & publish
-          commands:
-            - checkout
-            - cache restore build-prod-$(md5sum mix.lock | awk '{ print $1 }')
-            - cache restore deps-prod-$(md5sum mix.lock | awk '{ print $1 }')
-            - aws ecr get-login --no-include-email | bash
-            - docker build . -f Dockerfile.ci -t "${ECR_REGISTRY}:${SEMAPHORE_GIT_SHA}"
-            - docker push "${ECR_REGISTRY}:${SEMAPHORE_GIT_SHA}"
-
 promotions:
-  - name: "[01] Deploy to EKS - Production"
+  - name: "[01] Deploy to Fly.io - Production"
     pipeline_file: deployments/production.yml
     auto_promote_on:
       - result: passed

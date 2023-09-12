@@ -44,7 +44,7 @@ services:
   ci-test:
     build:
       context: .
-      dockerfile: Dockerfile.ci
+      dockerfile: Dockerfile.dev
     command: mix do deps.get --only, coveralls --trace --color
     depends_on:
       db:
