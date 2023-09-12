@@ -7,7 +7,9 @@ volumes:
 
 
 x-service-defaults: &service-defaults
-  build: .
+  build:
+    context: .
+    dockerfile: Dockerfile.dev
   ports:
     - '4000:4000'
   depends_on:
@@ -42,7 +44,9 @@ services:
       - TIMEZONE=America/Sao_Paulo
 
   ci-test:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.ci
     command: mix do deps.get --only, coveralls --trace --color
     depends_on:
       db:
@@ -57,21 +61,6 @@ services:
       - '4008:4008'
     volumes:
       - .:/opt
-
-  release:
-    build:
-      context: .
-      dockerfile: Dockerfile.ci
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "4008:4008"
-    environment:
-      - PORT=4008
-      - ERLANG_COOKIE=abcd1234
-      - SECRET_KEY_BASE=WicuiUeirLVtq4cZTE7df8Lp8d4A22VM+ZwIF59o7zTZv9P/c00ayhLW2XJriEMX
-      - GUARDIAN_TOKEN=x+SQxshaO975PeYCoLcZW5pCigRucayb7JqgisXod5P5/O2GnoL+IxiFPixjsv8e
 
   db:
     image: mysql:8.0
