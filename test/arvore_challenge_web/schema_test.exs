@@ -88,6 +88,8 @@ defmodule ArvoreChallengeWeb.SchemaTest do
         name
         parent_id
         subtree_ids
+        access_key
+        secret_access_key
       }
     }
     """
@@ -103,6 +105,8 @@ defmodule ArvoreChallengeWeb.SchemaTest do
       assert is_nil(response["inep"])
       assert is_nil(response["parent_id"])
       assert response["subtree_ids"] == []
+      assert is_binary(response["access_key"])
+      assert is_binary(response["secret_access_key"])
     end
 
     test "returns an entity of the type a school", %{conn: conn} do
@@ -116,6 +120,8 @@ defmodule ArvoreChallengeWeb.SchemaTest do
       assert response["inep"] == 13_082_175
       assert is_nil(response["parent_id"])
       assert response["subtree_ids"] == []
+      assert is_binary(response["access_key"])
+      assert is_binary(response["secret_access_key"])
     end
 
     test "returns an error when the parent doesn't exist of the type school", %{conn: conn} do
@@ -154,6 +160,8 @@ defmodule ArvoreChallengeWeb.SchemaTest do
       assert is_nil(response["inep"])
       assert response["parent_id"] == entity_school.id
       assert response["subtree_ids"] == []
+      assert is_binary(response["access_key"])
+      assert is_binary(response["secret_access_key"])
     end
 
     test "returns an error when the parent doesn't exist of the type class", %{conn: conn} do

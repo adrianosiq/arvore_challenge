@@ -18,7 +18,7 @@ defmodule ArvoreChallengeWeb.Schema do
   end
 
   mutation do
-    field :create_entity, :entity do
+    field :create_entity, :entity_with_credentials do
       arg(:name, non_null(:string))
       arg(:entity_type, non_null(:string))
       arg(:parent_id, :integer)
@@ -52,6 +52,12 @@ defmodule ArvoreChallengeWeb.Schema do
     field(:name, :string)
     field(:parent_id, :integer)
     field(:subtree_ids, list_of(:integer))
+  end
+
+  object :entity_with_credentials do
+    import_fields(:entity)
+    field(:access_key, :string)
+    field(:secret_access_key, :string)
   end
 
   object :autorization do
