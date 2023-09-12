@@ -50,8 +50,12 @@ if config_env() == :prod do
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :arvore_challenge, ArvoreChallengeWeb.Endpoint,
+    server: true,
     url: [host: host, port: 80, scheme: "http"],
-    http: [port: port],
+    http: [
+      ip: {0, 0, 0, 0, 0, 0, 0, 0},
+      port: port
+    ],
     secret_key_base: secret_key_base
 
   # ## SSL Support
