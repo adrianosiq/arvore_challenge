@@ -3,6 +3,7 @@ defmodule ArvoreChallengeWeb.Router do
 
   pipeline :api do
     plug(:accepts, ["json"])
+    plug(ArvoreChallengeWeb.Context)
   end
 
   scope "/api" do
