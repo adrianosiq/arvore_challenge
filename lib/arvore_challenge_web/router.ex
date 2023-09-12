@@ -9,8 +9,15 @@ defmodule ArvoreChallengeWeb.Router do
   scope "/api" do
     pipe_through(:api)
 
-    forward("/graphiql", Absinthe.Plug.GraphiQL, schema: ArvoreChallengeWeb.Schema)
-    forward("/", Absinthe.Plug, schema: ArvoreChallengeWeb.Schema)
+    forward("/graphiql", Absinthe.Plug.GraphiQL,
+      schema: ArvoreChallengeWeb.Schema,
+      adapter: Absinthe.Adapter.LanguageConventions
+    )
+
+    forward("/", Absinthe.Plug,
+      schema: ArvoreChallengeWeb.Schema,
+      adapter: Absinthe.Adapter.LanguageConventions
+    )
   end
 
   ## Health Check
