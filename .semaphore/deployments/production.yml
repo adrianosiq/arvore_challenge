@@ -10,8 +10,8 @@ blocks:
       secrets:
         - name: Fly.io
       jobs:
-        - name: Deploy
-          commands:
-            - checkout
-            - 'curl -L https://fly.io/install.sh | sh'
-            - flyctl deploy --remote-only --access-token $FLY_API_TOKEN
+      - name: Deploy
+        commands:
+          - checkout
+          - curl -L https://fly.io/install.sh | sh
+          - flyctl deploy --remote-only --access-token $FLY_API_TOKEN
