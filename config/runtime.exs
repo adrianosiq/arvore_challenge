@@ -57,6 +57,12 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  # Configures Guardian's authentication
+  config :arvore_challenge, ArvoreChallenge.Authorizations.Guardian,
+    issuer: "arvore_challenge",
+    secret_key: System.get_env("GUARDIAN_TOKEN"),
+    ttl: {1, :day}
+
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key
