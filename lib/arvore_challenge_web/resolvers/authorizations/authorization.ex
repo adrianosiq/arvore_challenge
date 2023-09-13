@@ -1,4 +1,4 @@
-defmodule ArvoreChallengeWeb.Resolvers.Partners.Authorization do
+defmodule ArvoreChallengeWeb.Resolvers.Authorizations.Authorization do
   @moduledoc false
 
   alias Absinthe.Resolution

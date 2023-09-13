@@ -5,7 +5,7 @@ defmodule ArvoreChallengeWeb.Schema do
 
   alias ArvoreChallengeWeb.Middlewares.EnsureAuthentication
   alias ArvoreChallengeWeb.Middlewares.ErrorHandler
-  alias ArvoreChallengeWeb.Resolvers.Partners.Authorization
+  alias ArvoreChallengeWeb.Resolvers.Authorizations.Authorization
   alias ArvoreChallengeWeb.Resolvers.Partners.Entity
 
   query do

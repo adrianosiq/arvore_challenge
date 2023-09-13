@@ -1,8 +1,8 @@
-defmodule ArvoreChallengeWeb.Resolvers.Partners.AuthorizationTest do
+defmodule ArvoreChallengeWeb.Resolvers.Authorizations.AuthorizationTest do
   use ArvoreChallenge.DataCase
 
   alias ArvoreChallenge.Authorizations.Guardian
-  alias ArvoreChallengeWeb.Resolvers.Partners.Authorization
+  alias ArvoreChallengeWeb.Resolvers.Authorizations.Authorization
 
   describe "auhorization/2" do
     test "returns an access token" do
