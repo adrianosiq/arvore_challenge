@@ -52,7 +52,7 @@ defmodule ArvoreChallengeWeb.SchemaTest do
       conn =
         conn
         |> add_autorization_header(entity)
-        |> post(~p"/api", %{"query" => @entity_query, "variables" => %{id: 1}})
+        |> post(~p"/api", %{"query" => @entity_query, "variables" => %{id: -1}})
 
       assert [%{"message" => message}] = json_response(conn, 200)["errors"]
       assert message == "Resource not found"
