@@ -45,13 +45,13 @@ mutation CreateEntity($name: String!, $entityType: String!, $inep: String, $pare
     }
 ```
 
-```
+```curl
 curl --location 'https://arvore-challenge.fly.dev/api' \
 --header 'Content-Type: application/json' \
 --data '{"query":"mutation CreateEntity($name: String!, $entityType: String!, $inep: String, $parentId: Int) {\r\n      createEntity(name: $name, entityType: $entityType, inep: $inep, parentId: $parentId) {\r\n        id\r\n        entityType\r\n        inep\r\n        name\r\n        parentId\r\n        subtreeIds\r\n        accessKey\r\n        secretAccessKey\r\n      }\r\n    }","variables":{"entityType":"network","name":"Some Network"}}'
 ```
 
-```
+```json
 {
     "data": {
         "createEntity": {
@@ -81,13 +81,13 @@ mutation Autorization($access_key: String!, $secret_access_key: String!) {
 }
 ```
 
-```
+```curl
 curl --location 'https://arvore-challenge.fly.dev/api' \
 --header 'Content-Type: application/json' \
 --data '{"query":"mutation Autorization($accessKey: String!, $secretAccessKey: String!) {\r\n      autorization(accessKey: $accessKey, secretAccessKey: $secretAccessKey) {\r\n        accessToken\r\n        expiresIn\r\n        tokenType\r\n      }\r\n    }","variables":{"accessKey":"h3YQWvVDDngEKYy2eDFcxP4aKAUIO45f","secretAccessKey":"TH5AIaSP1/CKA8ySnNF2jZPvVBRr9FbY77IjVxsC9O7iQft/R59kUPUMS8tfBBFi"}}'
 ```
 
-```
+```json
 {
     "data": {
         "autorization": {
@@ -115,14 +115,14 @@ query  getEntity($id: Int!)  {
 }
 ```
 
-```
+```curl
 curl --location 'https://arvore-challenge.fly.dev/api' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcnZvcmVfY2hhbGxlbmdlIiwiZXhwIjoxNjk0NjU0NDI5LCJpYXQiOjE2OTQ1NjgwMjksImlzcyI6ImFydm9yZV9jaGFsbGVuZ2UiLCJqdGkiOiJiZWZmZDI2Zi1kNWYwLTRlMjYtOTU2Zi02Y2I2Y2E1OTM3OWQiLCJuYmYiOjE2OTQ1NjgwMjgsInN1YiI6MywidHlwIjoiQmVhcmVyIn0.S-DHeLc45NHrQSdbbQKVcr9jR4a5JJV18c_06bev0N1M_snOYBRRYmVFqYjdsigQYEWlW7H9BcZiWNZVaBoazQ' \
 --data '{"query":"query getEntity($id: Int!) {\r\n      entity(id: $id) {\r\n        id\r\n        entityType\r\n        inep\r\n        name\r\n        parentId\r\n        subtreeIds\r\n      }\r\n    }","variables":{"id":3}}'
 ```
 
-```
+```json
 {
     "data": {
         "entity": {
@@ -152,14 +152,15 @@ mutation UpdateEntity($id: Int!, $name: String!, $inep: String, $parentId: Int) 
       }
     }
 ```
-```
+
+```curl
 curl --location 'https://arvore-challenge.fly.dev/api' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcnZvcmVfY2hhbGxlbmdlIiwiZXhwIjoxNjk0NjU0NDI5LCJpYXQiOjE2OTQ1NjgwMjksImlzcyI6ImFydm9yZV9jaGFsbGVuZ2UiLCJqdGkiOiJiZWZmZDI2Zi1kNWYwLTRlMjYtOTU2Zi02Y2I2Y2E1OTM3OWQiLCJuYmYiOjE2OTQ1NjgwMjgsInN1YiI6MywidHlwIjoiQmVhcmVyIn0.S-DHeLc45NHrQSdbbQKVcr9jR4a5JJV18c_06bev0N1M_snOYBRRYmVFqYjdsigQYEWlW7H9BcZiWNZVaBoazQ' \
 --data '{"query":"mutation UpdateEntity($id: Int!, $name: String!, $inep: String, $parentId: Int) {\r\n      updateEntity(id: $id, name: $name, inep: $inep, parentId: $parentId) {\r\n        id\r\n        entityType\r\n        inep\r\n        name\r\n        parentId\r\n        subtreeIds\r\n      }\r\n    }","variables":{"id":3,"name":"Update Some Network"}}'
 ```
 
-```
+```json
 {
     "data": {
         "updateEntity": {
