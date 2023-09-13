@@ -30,7 +30,7 @@ A aplicação encontra-se no endereço: [`https://arvore-challenge.fly.dev/api`]
 
 ## Criando uma nova entidade
 
-```
+```graphql
 mutation CreateEntity($name: String!, $entityType: String!, $inep: String, $parentId: Int) {
       createEntity(name: $name, entityType: $entityType, inep: $inep, parentId: $parentId) {
         id
@@ -71,7 +71,7 @@ curl --location 'https://arvore-challenge.fly.dev/api' \
 ## Autenticação
 Observação: para autenticação utilizar o `access_key` e `secret_access_key`
 
-```
+```graphql
 mutation Autorization($access_key: String!, $secret_access_key: String!) {
 	autorization(access_key: $access_key, secret_access_key: $secret_access_key) {
 		access_token
@@ -102,7 +102,7 @@ curl --location 'https://arvore-challenge.fly.dev/api' \
 ## Recuperar uma entidate
 Observação: Para acessar essa rota é necessário o access token válido.
 
-```
+```graphql
 query  getEntity($id: Int!)  {
 	entity(id: $id)  {
 		id
@@ -140,7 +140,7 @@ curl --location 'https://arvore-challenge.fly.dev/api' \
 ## Atualizando uma entidade
 Observação: Para acessar essa rota é necessário o access token válido.
 
-```
+```graphql
 mutation UpdateEntity($id: Int!, $name: String!, $inep: String, $parentId: Int) {
       updateEntity(id: $id, name: $name, inep: $inep, parentId: $parentId) {
         id
