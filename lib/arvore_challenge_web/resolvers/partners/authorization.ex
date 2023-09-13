@@ -1,7 +1,6 @@
 defmodule ArvoreChallengeWeb.Resolvers.Partners.Authorization do
   @moduledoc false
 
-  require Logger
   alias Absinthe.Resolution
   alias ArvoreChallenge.Authorizations
   alias ArvoreChallenge.Partners
@@ -14,12 +13,7 @@ defmodule ArvoreChallengeWeb.Resolvers.Partners.Authorization do
          {:ok, access_token, claims} <- Authorizations.encode_and_sign(entity) do
       {:ok, build_response(access_token, claims)}
     else
-      {:error, reason} ->
-        Logger.info(reason)
-        {:error, :unauthorized}
-
-      _ ->
-        {:error, :unauthorized}
+      _ -> {:error, :unauthorized}
     end
   end
 
